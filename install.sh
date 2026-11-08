@@ -4,7 +4,7 @@
 #   TORCH_INDEX_URL torch 源（默认阿里云 pytorch-wheels cu121 目录，用 -f 方式）
 #   TORCH_SPEC      torch 版本（默认 torch==2.3.1+cu121 torchvision==0.18.1+cu121，对应 Forge 原设定）
 #   XFORMERS_SPEC   默认 xformers==0.0.27（设为空则不装）
-#   PYTHON          默认 python3；VENV_DIR 默认 ./venv（设 VENV_DIR=- 则不建 venv）
+#   PYTHON          默认 python3；默认不建 venv，用系统 Python（设 VENV_DIR=./venv 才建）
 set -euo pipefail
 cd "$(dirname "$0")"
 ROOT="$(pwd)"
@@ -13,7 +13,7 @@ TORCH_INDEX_URL="${TORCH_INDEX_URL:-https://mirrors.aliyun.com/pytorch-wheels/cu
 TORCH_SPEC="${TORCH_SPEC:-torch==2.3.1+cu121 torchvision==0.18.1+cu121}"
 XFORMERS_SPEC="${XFORMERS_SPEC-xformers==0.0.27}"
 PYTHON="${PYTHON:-python3}"
-VENV_DIR="${VENV_DIR:-$ROOT/venv}"
+VENV_DIR="${VENV_DIR:--}"
 
 if [ "$VENV_DIR" != "-" ]; then
   [ -d "$VENV_DIR" ] || "$PYTHON" -m venv "$VENV_DIR"
@@ -25,11 +25,15 @@ export PIP_INDEX_URL
 echo "==> pip 源: $PIP_INDEX_URL"
 "${PIP[@]}" install -U pip wheel
 
-echo "==> torch: $TORCH_SPEC  (from $TORCH_INDEX_URL)"
-# shellcheck disable=SC2086
-"${PIP[@]}" install $TORCH_SPEC -f "$TORCH_INDEX_URL"
+if "$PYTHON" -c "import torch, torchvision" 2>/dev/null; then
+  echo "==> 已有 torch $("$PYTHON" -c 'import torch;print(torch.__version__)')，跳过"
+else
+  echo "==> torch: $TORCH_SPEC  (from $TORCH_INDEX_URL)"
+  # shellcheck disable=SC2086
+  "${PIP[@]}" install $TORCH_SPEC -f "$TORCH_INDEX_URL"
+fi
 
-if [ -n "$XFORMERS_SPEC" ]; then
+if [ -n "$XFORMERS_SPEC" ] && ! "$PYTHON" -c "import xformers" 2>/dev/null; then
   # shellcheck disable=SC2086
   "${PIP[@]}" install --no-deps $XFORMERS_SPEC || echo "!! xformers 安装失败，可去掉 --xformers 启动"
 fi

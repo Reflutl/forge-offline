@@ -3,7 +3,7 @@
 cd "$(dirname "$0")"
 ROOT="$(pwd)"
 [ -x "$ROOT/venv/bin/python" ] && export PATH="$ROOT/venv/bin:$PATH"
-PY="${PYTHON:-python}"
+PY="${PYTHON:-python3}"
 
 export CLIP_PACKAGE="\"$ROOT/wheels/clip-1.0-py3-none-any.whl\""
 export OPENCLIP_PACKAGE="\"$ROOT/wheels/open_clip_torch-2.7.0-py3-none-any.whl\""

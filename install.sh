@@ -2,16 +2,16 @@
 # 一次性安装依赖：全程不访问 github.com
 #   PIP_INDEX_URL   PyPI 镜像（默认阿里云）
 #   TORCH_INDEX_URL torch 源（默认阿里云 pytorch-wheels cu121 目录，用 -f 方式）
-#   TORCH_SPEC      torch 版本（默认 torch==2.3.1+cu121 torchvision==0.18.1+cu121，对应 Forge 原设定）
+#   TORCH_SPEC      torch 版本（默认 torch torchvision，对应 Forge 原设定）
 #   XFORMERS_SPEC   默认 xformers==0.0.27（设为空则不装）
 #   PYTHON          默认 python3；默认不建 venv，用系统 Python（设 VENV_DIR=./venv 才建）
 set -euo pipefail
 cd "$(dirname "$0")"
 ROOT="$(pwd)"
 PIP_INDEX_URL="${PIP_INDEX_URL:-https://mirrors.aliyun.com/pypi/simple}"
-TORCH_INDEX_URL="${TORCH_INDEX_URL:-https://mirrors.aliyun.com/pytorch-wheels/cu121/}"
-TORCH_SPEC="${TORCH_SPEC:-torch==2.3.1+cu121 torchvision==0.18.1+cu121}"
-XFORMERS_SPEC="${XFORMERS_SPEC-xformers==0.0.27}"
+TORCH_INDEX_URL="${TORCH_INDEX_URL:-https://mirrors.aliyun.com/pytorch-wheels/cu128/}"
+TORCH_SPEC="${TORCH_SPEC:-torch torchvision}"
+XFORMERS_SPEC="${XFORMERS_SPEC-xformers}"
 PYTHON="${PYTHON:-python3}"
 VENV_DIR="${VENV_DIR:--}"
 

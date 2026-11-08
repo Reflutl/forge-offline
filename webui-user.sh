@@ -15,7 +15,7 @@ export WEBUI_EXTENSIONS_INDEX=""
 export PIP_INDEX_URL="${PIP_INDEX_URL:-https://mirrors.aliyun.com/pypi/simple}"
 export HF_ENDPOINT="${HF_ENDPOINT:-https://hf-mirror.com}"
 export GRADIO_ANALYTICS_ENABLED=False
-export TORCH_COMMAND="${TORCH_COMMAND:-pip install torch==2.3.1+cu121 torchvision==0.18.1+cu121 -f https://mirrors.aliyun.com/pytorch-wheels/cu121/}"
+export TORCH_COMMAND="${TORCH_COMMAND:-pip install torch torchvision -f https://mirrors.aliyun.com/pytorch-wheels/cu128/}"
 
 COMMANDLINE_ARGS="${COMMANDLINE_ARGS:---skip-install --skip-python-version-check}"
 # shellcheck disable=SC2086

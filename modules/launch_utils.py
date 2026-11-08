@@ -181,6 +181,9 @@ def git_clone(url, dir, name, commithash=None):
     # TODO clone into temporary dir and move if successful
 
     if os.path.exists(dir):
+        # self-contained: vendored plain-file copy (no .git) -> never fetch
+        if not os.path.exists(os.path.join(dir, '.git')):
+            return
         if commithash is None:
             return
 
@@ -387,8 +390,8 @@ def prepare_environment():
     requirements_file_for_npu = os.environ.get('REQS_FILE_FOR_NPU', "requirements_npu.txt")
 
     xformers_package = os.environ.get('XFORMERS_PACKAGE', 'xformers==0.0.27')
-    clip_package = os.environ.get('CLIP_PACKAGE', "https://github.com/openai/CLIP/archive/d50d76daa670286dd6cacf3bcd80b5e4823fc8e1.zip")
-    openclip_package = os.environ.get('OPENCLIP_PACKAGE', "https://github.com/mlfoundations/open_clip/archive/bb6e834e9c70d9c27d0dc3ecedeebeaeb1ffad6b.zip")
+    clip_package = os.environ.get('CLIP_PACKAGE', '"' + os.path.join(script_path, "wheels", "clip-1.0-py3-none-any.whl") + '"')
+    openclip_package = os.environ.get('OPENCLIP_PACKAGE', '"' + os.path.join(script_path, "wheels", "open_clip_torch-2.7.0-py3-none-any.whl") + '"')
 
     assets_repo = os.environ.get('ASSETS_REPO', "https://github.com/AUTOMATIC1111/stable-diffusion-webui-assets.git")
     # stable_diffusion_repo = os.environ.get('STABLE_DIFFUSION_REPO', "https://github.com/Stability-AI/stablediffusion.git")

@@ -14,7 +14,10 @@ __pycache__
 /outputs/
 /ESRGAN/*
 /SwinIR/*
-/repositories
+/repositories/*
+!/repositories/stable-diffusion-webui-assets
+!/repositories/huggingface_guess
+!/repositories/BLIP
 /venv
 /tmp
 /output
